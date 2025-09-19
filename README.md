@@ -34,8 +34,8 @@ A complete e-commerce solution built with React, Node.js, Express, and MongoDB. 
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd Full_Stack_Ecommerce
+   git clone https://github.com/ASYMPTODE/EcoShop.git
+   cd EcoShop
    ```
 
 2. **Install dependencies**
