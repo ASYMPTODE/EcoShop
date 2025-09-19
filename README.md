@@ -78,16 +78,7 @@ A complete e-commerce solution built with React, Node.js, Express, and MongoDB. 
 - **Admin Panel**: http://localhost:3001  
 - **Backend API**: http://localhost:4000
 
-## 📊 Sample Data
-
-Generate 100 sample products for testing:
-
-1. Start all applications
-2. Go to Admin Panel → Add Product
-3. Click "🎲 Generate 100 Sample Products"
-4. Confirm and wait for completion
-
-## 🔧 Configuration
+##  Configuration
 
 ### Environment Variables
 
@@ -141,18 +132,7 @@ This project includes Stripe integration for payments:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For support and questions:
-- Check the [Setup Guide](SETUP_GUIDE.md)
-- Review [Sample Data Guide](SAMPLE_DATA_GUIDE.md)
-- See [Stripe Integration Guide](STRIPE_INTEGRATION_GUIDE.md)
-
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - React team for the amazing framework
 - Stripe for payment processing
