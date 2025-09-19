@@ -6,7 +6,7 @@ import Navbar from "./Components/Navbar/Navbar";
 // Lazy load Admin component
 const Admin = lazy(() => import("./Pages/Admin"));
 
-export const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000';
+export const backend_url = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000'; // Main backend server with fixed CORS
 export const currency = '₹';
 
 function App() {

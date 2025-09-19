@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Display Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .test-images {
+            margin: 20px 0;
+        }
+        .test-images img {
+            margin: 10px;
+            border: 2px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>🖼️ Image Display Test</h1>
+    
+    <div class="test-images">
+        <h2>Direct Image Links:</h2>
+        <img src="http://localhost:4000/images/product_1758298888387.webp" alt="Test Image 1" width="100" height="100">
+        <img src="http://localhost:4000/images/product_1758298888387_400.webp" alt="Test Image 2" width="100" height="100">
+        <img src="http://localhost:4000/images/product_1758298994300_400.webp" alt="Test Image 3" width="100" height="100">
+    </div>
+
+    <h2>📦 Products from API:</h2>
+    <div id="products" class="product-grid">
+        Loading products...
+    </div>
+
+    <script>
+        // Fetch and display products
+        fetch('http://localhost:4000/allproducts')
+            .then(response => response.json())
+            .then(data => {
+                const productsDiv = document.getElementById('products');
+                
+                if (data.success && data.products.length > 0) {
+                    productsDiv.innerHTML = data.products.map(product => `
+                        <div class="product-card">
+                            <img src="${product.image}" alt="${product.name}" class="product-image" 
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjwvnZnPg=='">
+                            <h3>${product.name}</h3>
+                            <p>Price: $${product.new_price}</p>
+                            <p>Category: ${product.category}</p>
+                            <p><small>Image URL: ${product.image}</small></p>
+                        </div>
+                    `).join('');
+                } else {
+                    productsDiv.innerHTML = '<p>No products found</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+                document.getElementById('products').innerHTML = '<p>Error loading products</p>';
+            });
+    </script>
+</body>
+</html>

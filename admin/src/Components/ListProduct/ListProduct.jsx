@@ -115,18 +115,20 @@ const ListProduct = () => {
             <div className="listproduct-format-main listproduct-format">
               <LazyLoadImage
                 className="listproduct-product-icon"
-                src={backend_url + e.image}
+                src={e.image}
                 alt={e.name || "Product image"}
                 effect="blur"
-                srcSet={`${backend_url}${e.image}?width=55 55w, ${backend_url}${e.image}?width=110 110w`}
-                sizes="55px"
-                width="auto"
+                width="55px"
                 height="55px"
                 loading="lazy"
                 placeholderSrc="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHZpZXdCb3g9IjAgMCA1NSA1NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjRjNGNEY2Ii8+Cjwvc3ZnPg=="
                 threshold={100}
                 delayMethod="throttle"
                 delayTime={200}
+                onError={(e) => {
+                  console.log('Image load error:', e.target.src);
+                  e.target.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHZpZXdCb3g9IjAgMCA1NSA1NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjRjNGNEY2Ii8+Cjwvc3ZnPg==";
+                }}
               />
               <p className="cartitems-product-title">{e.name}</p>
               <p>{currency}{e.old_price}</p>

@@ -28,8 +28,23 @@ if (process.env.STRIPE_SECRET_KEY && !process.env.STRIPE_SECRET_KEY.includes('yo
 const port = process.env.PORT || 4000;
 
 app.use(express.json());
-app.use(cors());
-app.use(helmet());
+
+// Enhanced CORS configuration for image serving
+app.use(cors({
+  origin: [
+    'http://localhost:3001', // Admin panel
+    'http://localhost:3002', // Frontend
+    'http://localhost:3000'  // Default React port
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true
+}));
+
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  crossOriginEmbedderPolicy: false
+}));
 app.use(morgan("dev"));
 
 // Rate limiting middleware to prevent abuse
@@ -73,7 +88,10 @@ const cacheMiddleware = (duration) => {
 };
 
 // Database Connection With MongoDB
-mongoose.connect(process.env.MONGO_URI, {
+const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/ecommerce';
+console.log('🔗 Attempting to connect to MongoDB:', mongoUri);
+
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -92,14 +110,38 @@ mongoose.connection.on('disconnected', () => {
 });
 
 
-//Image Storage Engine 
+//Image Storage Engine with file validation
 const storage = multer.diskStorage({
   destination: './upload/images',
   filename: (req, file, cb) => {
     return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
   }
-})
-const upload = multer({ storage: storage })
+});
+
+// File filter to accept only image files
+const fileFilter = (req, file, cb) => {
+  console.log('📁 File upload attempt:', {
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    size: file.size
+  });
+  
+  // Accept image files
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    console.log('❌ File rejected - not an image:', file.mimetype);
+    cb(new Error('Only image files are allowed!'), false);
+  }
+};
+
+const upload = multer({ 
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
+  }
+});
 
 // Image upload with compression and format conversion
 app.post("/upload", upload.single('product'), async (req, res) => {
@@ -233,8 +275,20 @@ app.post("/upload", upload.single('product'), async (req, res) => {
 })
 
 
-// Optimized static file serving with green software principles
-app.use('/images', express.static('upload/images', {
+// Optimized static file serving with green software principles and CORS
+app.use('/images', (req, res, next) => {
+  // Add CORS headers for image serving
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  next();
+}, express.static('upload/images', {
   maxAge: '7d', // Cache images for 7 days to reduce server load
   etag: true,   // Enable ETags for efficient caching
   lastModified: true, // Enable last-modified headers
@@ -242,7 +296,10 @@ app.use('/images', express.static('upload/images', {
     // Add green software headers
     res.set({
       'X-Green-Optimized': 'true',
-      'X-Content-Type': path.endsWith('.webp') ? 'image/webp' : 'image/jpeg'
+      'X-Content-Type': path.endsWith('.webp') ? 'image/webp' : 'image/jpeg',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Cross-Origin-Resource-Policy': 'cross-origin'
     });
 
     // Add compression hints for better performance
@@ -1088,12 +1145,27 @@ app.post('/api/clear-cart', fetchuser, async (req, res) => {
 
 // Centralized Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Internal Server Error" });
+  console.error('❌ Server Error:', err.stack);
+  res.status(500).json({ error: "Internal Server Error", details: err.message });
 });
 
-// Starting Express Server
-app.listen(port, (error) => {
-  if (!error) console.log("Server Running on port " + port);
-  else console.log("Error : ", error);
+// Global error handlers
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+// Starting Express Server with enhanced error handling
+app.listen(port, '0.0.0.0', (error) => {
+  if (!error) {
+    console.log("✅ Server Running on port " + port);
+    console.log("🌐 Access at: http://localhost:" + port);
+    console.log("📤 Upload endpoint: http://localhost:" + port + "/upload");
+    console.log("🖼️ Images served at: http://localhost:" + port + "/images/");
+  } else {
+    console.log("❌ Server Error:", error);
+  }
 });
