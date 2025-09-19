@@ -1,0 +1,224 @@
+/* New Collections Section - Green Software Theme */
+.new-collections {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 1280px;
+    margin: 80px auto 100px;
+    padding: 0 20px;
+}
+
+.collections-header {
+    text-align: center;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.eco-badge-collections {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent-green), var(--primary-green));
+    color: var(--natural-white);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.new-collections h1 {
+    color: var(--text-primary);
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+}
+
+.collections-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.collections-divider {
+    width: 100px;
+    height: 4px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--accent-green), var(--secondary-green));
+    margin: 20px 0 40px 0;
+}
+
+.collections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-top: 40px;
+    gap: 24px;
+    width: 100%;
+}
+
+/* Pagination Controls */
+.new-collections .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto 0;
+    gap: 24px;
+    padding: 20px;
+    background: var(--soft-cream);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+}
+
+.new-collections .pagination-button {
+    padding: 12px 24px;
+    background: var(--natural-white);
+    border: 2px solid var(--accent-green);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent-green);
+    transition: var(--transition-smooth);
+    min-width: 100px;
+}
+
+.new-collections .pagination-button:hover:not(:disabled) {
+    background: var(--accent-green);
+    color: var(--natural-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.new-collections .pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.new-collections .pagination-info {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 8px 16px;
+    background: var(--natural-white);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--mint-green);
+}
+
+/* Loading and Empty States */
+.new-collections .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 18px;
+    color: var(--text-secondary);
+    width: 100%;
+    background: var(--soft-cream);
+    border-radius: var(--border-radius);
+    margin: 20px 0;
+}
+
+.new-collections .no-products {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 18px;
+    color: var(--text-secondary);
+    width: 100%;
+    background: var(--soft-cream);
+    border-radius: var(--border-radius);
+    margin: 20px 0;
+    grid-column: 1 / -1;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .new-collections {
+        margin: 60px auto 80px;
+        padding: 0 16px;
+    }
+    
+    .collections {
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .new-collections {
+        margin: 40px auto 60px;
+        padding: 0 12px;
+    }
+    
+    .new-collections h1 {
+        font-size: clamp(1.75rem, 5vw, 2rem);
+    }
+    
+    .collections-subtitle {
+        font-size: 1rem;
+    }
+    
+    .collections-divider {
+        width: 80px;
+        margin: 16px 0 32px 0;
+    }
+    
+    .collections {
+        gap: 16px;
+        margin-top: 32px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    
+    .pagination-controls {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+    }
+    
+    .pagination-button {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .new-collections {
+        margin: 32px auto 48px;
+        padding: 0 8px;
+    }
+    
+    .eco-badge-collections {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .new-collections h1 {
+        font-size: clamp(1.5rem, 6vw, 1.75rem);
+    }
+    
+    .collections-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .collections {
+        gap: 12px;
+        margin-top: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    
+    .pagination-button {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    .pagination-info {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+}

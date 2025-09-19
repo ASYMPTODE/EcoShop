@@ -1,0 +1,229 @@
+/* Green Software Theme - Eco-Friendly E-commerce */
+:root {
+  /* Primary Green Palette */
+  --primary-green: #2d5a27;
+  --secondary-green: #4a7c59;
+  --accent-green: #7fb069;
+  --light-green: #a7c957;
+  --mint-green: #bcf5bc;
+  
+  /* Neutral Earth Tones */
+  --earth-brown: #8b5a3c;
+  --warm-beige: #f4f1de;
+  --soft-cream: #fefae0;
+  --natural-white: #fefefe;
+  
+  /* Functional Colors */
+  --success-green: #52b788;
+  --warning-amber: #f77f00;
+  --error-red: #d62828;
+  --info-blue: #457b9d;
+  
+  /* Text Colors */
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --text-light: #b2bec3;
+  
+  /* Shadows and Effects */
+  --shadow-soft: 0 2px 8px rgba(45, 90, 39, 0.1);
+  --shadow-medium: 0 4px 16px rgba(45, 90, 39, 0.15);
+  --border-radius: 8px;
+  --border-radius-large: 16px;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-smooth: 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background-color: var(--soft-cream);
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+/* Simplified Loading Component */
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 18px;
+  color: var(--text-secondary);
+  background-color: var(--natural-white);
+  border-radius: var(--border-radius);
+  margin: 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.loading::before {
+  content: '🌱';
+  font-size: 32px;
+  margin-bottom: 16px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Clean Link Styles */
+a {
+  text-decoration: none !important;
+  color: inherit;
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-green);
+}
+
+/* Eco-Friendly Button Styles */
+.btn-primary {
+  background-color: var(--primary-green);
+  color: var(--natural-white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-green);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-green);
+  border: 2px solid var(--primary-green);
+  padding: 10px 22px;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-green);
+  color: var(--natural-white);
+}
+
+/* Sustainable Card Design */
+.card {
+  background-color: var(--natural-white);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+  margin: 16px 0;
+  transition: var(--transition-smooth);
+  border: 1px solid rgba(45, 90, 39, 0.1);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-4px);
+}
+
+/* Eco Badge */
+.eco-badge {
+  background-color: var(--success-green);
+  color: var(--natural-white);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.eco-badge::before {
+  content: '🌿';
+  font-size: 14px;
+}
+
+/* Simplified Form Styles */
+input, textarea, select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(45, 90, 39, 0.2);
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  transition: var(--transition-fast);
+  background-color: var(--natural-white);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.1);
+}
+
+/* Responsive Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+
+h1 { font-size: clamp(2rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* Accessibility Improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus Indicators */
+*:focus-visible {
+  outline: 2px solid var(--primary-green);
+  outline-offset: 2px;
+}
+
+/* Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--warm-beige);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-green);
+}

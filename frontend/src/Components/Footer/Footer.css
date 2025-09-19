@@ -1,0 +1,436 @@
+.footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 60px 20px 40px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+    pointer-events: none;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 1;
+}
+
+.footer-logo img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-brand-name {
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.footer-tagline {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+/* Sustainability Section */
+.footer-sustainability {
+    text-align: center;
+    max-width: 800px;
+    z-index: 1;
+}
+
+.sustainability-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.sustainability-icon {
+    font-size: 28px;
+}
+
+.sustainability-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 16px 20px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    font-size: 24px;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.stat-content strong {
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-content span {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Footer Links */
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    gap: 32px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    z-index: 1;
+}
+
+.footer-links li {
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.footer-links li:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Social Icons */
+.footer-social-icons {
+    display: flex;
+    gap: 16px;
+    z-index: 1;
+}
+
+.footer-icons-container {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.footer-icons-container:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.footer-icons-container img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+/* Certifications */
+.footer-certifications {
+    text-align: center;
+    z-index: 1;
+}
+
+.footer-certifications h4 {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.certification-badges {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.cert-badge {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.cert-badge:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Copyright */
+.footer-copyright {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    z-index: 1;
+}
+
+.footer-copyright hr {
+    width: 60%;
+    border: none;
+    border-radius: 10px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.copyright-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.copyright-content p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.footer-eco-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-style: italic;
+}
+
+.eco-icon {
+    font-size: 16px;
+}
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .footer {
+        padding: 50px 20px 30px;
+        gap: 32px;
+    }
+    
+    .sustainability-stats {
+        gap: 24px;
+    }
+    
+    .stat-item {
+        padding: 12px 16px;
+    }
+    
+    .footer-links {
+        gap: 24px;
+        font-size: 15px;
+    }
+    
+    .certification-badges {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 40px 16px 24px;
+        gap: 28px;
+    }
+    
+    .footer-brand-name {
+        font-size: 28px;
+    }
+    
+    .sustainability-title {
+        font-size: 20px;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .sustainability-stats {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+    }
+    
+    .stat-item {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+    
+    .footer-links {
+        gap: 20px;
+        font-size: 14px;
+    }
+    
+    .footer-social-icons {
+        gap: 12px;
+    }
+    
+    .certification-badges {
+        justify-content: center;
+    }
+    
+    .cert-badge {
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 32px 12px 20px;
+        gap: 24px;
+    }
+    
+    .footer-logo {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    
+    .footer-logo img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .footer-brand-name {
+        font-size: 24px;
+    }
+    
+    .footer-tagline {
+        font-size: 12px;
+    }
+    
+    .sustainability-title {
+        font-size: 18px;
+    }
+    
+    .sustainability-icon {
+        font-size: 24px;
+    }
+    
+    .stat-content strong {
+        font-size: 16px;
+    }
+    
+    .stat-content span {
+        font-size: 11px;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    
+    .footer-links li {
+        padding: 6px 12px;
+    }
+    
+    .footer-social-icons {
+        gap: 8px;
+    }
+    
+    .footer-icons-container {
+        padding: 10px;
+    }
+    
+    .footer-icons-container img {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .footer-certifications h4 {
+        font-size: 16px;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .certification-badges {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .cert-badge {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+    
+    .footer-copyright {
+        font-size: 12px;
+    }
+    
+    .footer-eco-message {
+        flex-direction: column;
+        gap: 4px;
+        font-size: 11px;
+    }
+}
