@@ -53,6 +53,32 @@
     justify-content: center;
     color: var(--primary-green);
     font-size: 48px;
+    position: relative;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.image-placeholder::before {
+    content: '🌱';
+    font-size: 36px;
+    animation: pulse 2s infinite;
+}
+
+.image-placeholder::after {
+    content: 'Loading...';
+    font-size: 12px;
+    font-weight: 500;
+    animation: fadeInOut 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 .item-discount-badge {

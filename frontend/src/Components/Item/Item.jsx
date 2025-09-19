@@ -22,12 +22,12 @@ const Item = (props) => {
               effect="blur"
               threshold={100}
               placeholder={<div className="image-placeholder" />}
-              srcSet={`${backend_url+props.image}?width=200 200w, 
-                      ${backend_url+props.image}?width=400 400w, 
-                      ${backend_url+props.image}?width=600 600w`}
-              sizes="(max-width: 500px) 100vw, 
-                     (max-width: 800px) 50vw, 
-                     25vw"
+              srcSet={`${backend_url}${props.image.replace('.webp', '_200.webp')} 200w, 
+                      ${backend_url}${props.image.replace('.webp', '_400.webp')} 400w, 
+                      ${backend_url}${props.image} 800w`}
+              sizes="(max-width: 500px) 200px, 
+                     (max-width: 800px) 400px, 
+                     600px"
               width="100%"
               height="auto"
               loading="lazy"
