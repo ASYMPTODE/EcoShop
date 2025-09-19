@@ -10,6 +10,28 @@ const Item = (props) => {
     ? Math.round(((props.old_price - props.new_price) / props.old_price) * 100)
     : 0;
 
+  // Handle both old and new image format
+  const getImageSrc = () => {
+    if (props.images && props.images.webp) {
+      return backend_url + props.images.webp;
+    }
+    return backend_url + props.image;
+  };
+
+  const getSrcSet = () => {
+    if (props.images && props.images.sizes) {
+      // Use the new responsive image structure
+      return `${backend_url}${props.images.sizes.small} 200w, 
+              ${backend_url}${props.images.sizes.medium} 400w, 
+              ${backend_url}${props.images.sizes.large} 800w`;
+    } else {
+      // Fallback to old format
+      return `${backend_url}${props.image.replace('.webp', '_200.webp')} 200w, 
+              ${backend_url}${props.image.replace('.webp', '_400.webp')} 400w, 
+              ${backend_url}${props.image} 800w`;
+    }
+  };
+
   return (
     <div className='item'>
       <div className="item-card">
@@ -17,14 +39,12 @@ const Item = (props) => {
           <div className="item-image-container">
             <LazyLoadImage
               onClick={window.scrollTo(0, 0)}
-              src={backend_url+props.image}
+              src={getImageSrc()}
               alt={props.name || "Product image"}
               effect="blur"
               threshold={100}
               placeholder={<div className="image-placeholder" />}
-              srcSet={`${backend_url}${props.image.replace('.webp', '_200.webp')} 200w, 
-                      ${backend_url}${props.image.replace('.webp', '_400.webp')} 400w, 
-                      ${backend_url}${props.image} 800w`}
+              srcSet={getSrcSet()}
               sizes="(max-width: 500px) 200px, 
                      (max-width: 800px) 400px, 
                      600px"

@@ -109,27 +109,44 @@ app.post("/upload", upload.single('product'), async (req, res) => {
     }
 
     const originalPath = req.file.path;
+    const originalSize = req.file.size;
     const fileNameWithoutExt = req.file.filename.split('.').slice(0, -1).join('.');
     const outputFilename = `${fileNameWithoutExt}.webp`;
     const outputPath = `./upload/images/${outputFilename}`;
 
     // Create different sizes for responsive images
-    const sizes = [800, 400, 200];
-    const outputPaths = [];
+    const sizes = { large: 800, medium: 400, small: 200 };
+    const imageData = {
+      original: `/images/${req.file.filename}`,
+      webp: `/images/${outputFilename}`,
+      sizes: {},
+      metadata: {
+        originalSize: originalSize,
+        compressedSize: 0,
+        compressionRatio: 0,
+        format: 'webp',
+        quality: 75,
+        uploadDate: new Date(),
+        greenOptimized: true
+      }
+    };
 
     // Create a temporary copy for processing to avoid same file input/output issue
     const tempPath = `./upload/images/temp_${Date.now()}.tmp`;
     fs.copyFileSync(originalPath, tempPath);
 
-    for (const size of sizes) {
-      const sizeFilename = `${fileNameWithoutExt}_${size}.webp`;
+    let totalCompressedSize = 0;
+
+    // Generate responsive images
+    for (const [sizeKey, sizeValue] of Object.entries(sizes)) {
+      const sizeFilename = `${fileNameWithoutExt}_${sizeValue}.webp`;
       const sizePath = `./upload/images/${sizeFilename}`;
 
       // Process image with Sharp - resize and convert to WebP (Green optimized)
       await sharp(tempPath)
         .resize({
-          width: size,
-          height: size,
+          width: sizeValue,
+          height: sizeValue,
           fit: sharp.fit.inside,
           withoutEnlargement: true
         })
@@ -139,12 +156,13 @@ app.post("/upload", upload.single('product'), async (req, res) => {
         })
         .toFile(sizePath);
 
-      console.log(`🌱 Green Optimized: ${sizeFilename} (${size}px) - WebP 75% quality`);
-
-      outputPaths.push({
-        size,
-        path: `/images/${sizeFilename}`
-      });
+      // Get compressed file size
+      const stats = fs.statSync(sizePath);
+      totalCompressedSize += stats.size;
+      
+      imageData.sizes[sizeKey] = `/images/${sizeFilename}`;
+      
+      console.log(`🌱 Green Optimized: ${sizeFilename} (${sizeValue}px) - ${stats.size} bytes`);
     }
 
     // Create a full-size WebP version as well (Green optimized)
@@ -155,18 +173,28 @@ app.post("/upload", upload.single('product'), async (req, res) => {
           effort: 4    // Lower effort for faster processing
         })
         .toFile(outputPath);
-      console.log(`🌱 Green Full-size WebP created: ${outputFilename} (75% quality)`);
+      
+      const fullSizeStats = fs.statSync(outputPath);
+      totalCompressedSize += fullSizeStats.size;
+      
+      console.log(`🌱 Green Full-size WebP created: ${outputFilename} - ${fullSizeStats.size} bytes`);
     } catch (error) {
       console.error('Error creating full-size WebP:', error);
-      // If full-size creation fails, use the 800px version as fallback
+      // If full-size creation fails, use the large version as fallback
       const fallbackPath = `./upload/images/${fileNameWithoutExt}_800.webp`;
       if (fs.existsSync(fallbackPath)) {
         fs.copyFileSync(fallbackPath, outputPath);
+        const fallbackStats = fs.statSync(outputPath);
+        totalCompressedSize += fallbackStats.size;
         console.log('🌱 Green Fallback: Using 800px version for full-size image');
       }
     }
 
-    // Remove the original and temporary files to save space
+    // Calculate compression ratio
+    imageData.metadata.compressedSize = totalCompressedSize;
+    imageData.metadata.compressionRatio = Math.round(((originalSize - totalCompressedSize) / originalSize) * 100);
+
+    // Remove the original file to save space (keep temp for now)
     try {
       fs.unlinkSync(originalPath);
       console.log('Original file deleted successfully');
@@ -181,10 +209,19 @@ app.post("/upload", upload.single('product'), async (req, res) => {
       console.warn('Warning: Could not delete temporary file:', error.message);
     }
 
+    console.log(`🌱 Green Compression Complete: ${imageData.metadata.compressionRatio}% size reduction`);
+    console.log(`💾 Storage Saved: ${Math.round((originalSize - totalCompressedSize) / 1024)} KB`);
+
     res.json({
       success: 1,
-      image_url: `/images/${outputFilename}`,
-      responsive_images: outputPaths
+      image_url: imageData.webp,
+      images: imageData,
+      green_stats: {
+        original_size: originalSize,
+        compressed_size: totalCompressedSize,
+        compression_ratio: `${imageData.metadata.compressionRatio}%`,
+        bandwidth_saved: `${Math.round((originalSize - totalCompressedSize) / 1024)} KB`
+      }
     });
   } catch (error) {
     console.error('Image processing error:', error);
@@ -242,12 +279,31 @@ const Users = mongoose.model("Users", {
 });
 
 
-// Schema for creating Product
+// Schema for creating Product with Green Software Optimization
 const Product = mongoose.model("Product", {
   id: { type: Number, required: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
-  image: { type: String, required: true },
+  image: { type: String, required: true }, // Main image URL for backward compatibility
+  images: {
+    // Green software optimized image data
+    original: { type: String }, // Original uploaded image path
+    webp: { type: String },     // Main WebP optimized image
+    sizes: {
+      large: { type: String },   // 800px WebP
+      medium: { type: String },  // 400px WebP  
+      small: { type: String }    // 200px WebP
+    },
+    metadata: {
+      originalSize: { type: Number }, // Original file size in bytes
+      compressedSize: { type: Number }, // Total compressed size
+      compressionRatio: { type: Number }, // Compression ratio percentage
+      format: { type: String, default: 'webp' },
+      quality: { type: Number, default: 75 },
+      uploadDate: { type: Date, default: Date.now },
+      greenOptimized: { type: Boolean, default: true }
+    }
+  },
   category: { type: String, required: true },
   new_price: { type: Number },
   old_price: { type: Number },
@@ -718,26 +774,69 @@ app.post('/getcart', fetchuser, async (req, res) => {
 
 // Create an endpoint for adding products using admin panel
 app.post("/addproduct", async (req, res) => {
-  let products = await Product.find({});
-  let id;
-  if (products.length > 0) {
-    let last_product_array = products.slice(-1);
-    let last_product = last_product_array[0];
-    id = last_product.id + 1;
+  try {
+    let products = await Product.find({});
+    let id;
+    if (products.length > 0) {
+      let last_product_array = products.slice(-1);
+      let last_product = last_product_array[0];
+      id = last_product.id + 1;
+    }
+    else { id = 1; }
+    
+    // Create product with comprehensive image data
+    const product = new Product({
+      id: id,
+      name: req.body.name,
+      description: req.body.description,
+      image: req.body.image, // Main image URL for backward compatibility
+      images: req.body.images || {
+        // Default structure if images data not provided
+        original: req.body.image,
+        webp: req.body.image,
+        sizes: {
+          large: req.body.image,
+          medium: req.body.image,
+          small: req.body.image
+        },
+        metadata: {
+          originalSize: 0,
+          compressedSize: 0,
+          compressionRatio: 0,
+          format: 'webp',
+          quality: 75,
+          uploadDate: new Date(),
+          greenOptimized: true
+        }
+      },
+      category: req.body.category,
+      new_price: req.body.new_price,
+      old_price: req.body.old_price,
+    });
+    
+    await product.save();
+    console.log(`✅ Product saved with green image optimization: ${req.body.name}`);
+    
+    // Log green software metrics
+    if (req.body.images && req.body.images.metadata) {
+      console.log(`🌱 Green Metrics - Compression: ${req.body.images.metadata.compressionRatio}%`);
+      console.log(`💾 Storage Saved: ${Math.round((req.body.images.metadata.originalSize - req.body.images.metadata.compressedSize) / 1024)} KB`);
+    }
+    
+    res.json({ 
+      success: true, 
+      name: req.body.name,
+      id: id,
+      green_optimized: true
+    });
+  } catch (error) {
+    console.error('Error adding product:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Error adding product', 
+      error: error.message 
+    });
   }
-  else { id = 1; }
-  const product = new Product({
-    id: id,
-    name: req.body.name,
-    description: req.body.description,
-    image: req.body.image,
-    category: req.body.category,
-    new_price: req.body.new_price,
-    old_price: req.body.old_price,
-  });
-  await product.save();
-  console.log("Saved");
-  res.json({ success: true, name: req.body.name })
 });
 
 

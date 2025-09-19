@@ -11,49 +11,78 @@ const ProductDisplay = ({product}) => {
 
   const {addToCart} = useContext(ShopContext);
 
+  // Handle both old and new image format
+  const getImageSrc = () => {
+    if (product.images && product.images.webp) {
+      return backend_url + product.images.webp;
+    }
+    return backend_url + product.image;
+  };
+
+  const getSmallImageSrc = () => {
+    if (product.images && product.images.sizes && product.images.sizes.small) {
+      return backend_url + product.images.sizes.small;
+    }
+    return backend_url + product.image;
+  };
+
+  const getThumbnailSrcSet = () => {
+    if (product.images && product.images.sizes) {
+      return `${backend_url}${product.images.sizes.small} 200w`;
+    }
+    return `${backend_url}${product.image.replace('.webp', '_200.webp')} 200w`;
+  };
+
+  const getMainSrcSet = () => {
+    if (product.images && product.images.sizes) {
+      return `${backend_url}${product.images.sizes.medium} 400w, 
+              ${backend_url}${product.images.sizes.large} 800w, 
+              ${backend_url}${product.images.webp} 1200w`;
+    }
+    return `${backend_url}${product.image.replace('.webp', '_400.webp')} 400w, 
+            ${backend_url}${product.image.replace('.webp', '_800.webp')} 800w, 
+            ${backend_url}${product.image} 1200w`;
+  };
+
   return (
     <div className="productdisplay">
       <div className="productdisplay-left">
         <div className="productdisplay-img-list">
           <LazyLoadImage 
-            src={backend_url + product.image} 
+            src={getSmallImageSrc()} 
             alt={product.name || "Product thumbnail"} 
             effect="blur" 
-            srcSet={`${backend_url+product.image}?width=120 120w, 
-                    ${backend_url+product.image}?width=240 240w`}
+            srcSet={getThumbnailSrcSet()}
             sizes="120px"
             width="110px"
             height="auto"
             loading="lazy"
           />
           <LazyLoadImage 
-            src={backend_url + product.image} 
+            src={getSmallImageSrc()} 
             alt={product.name || "Product thumbnail"} 
             effect="blur" 
-            srcSet={`${backend_url+product.image}?width=120 120w, 
-                    ${backend_url+product.image}?width=240 240w`}
+            srcSet={getThumbnailSrcSet()}
             sizes="120px"
             width="110px"
             height="auto"
             loading="lazy"
           />
           <LazyLoadImage 
-            src={backend_url + product.image} 
+            src={getSmallImageSrc()} 
             alt={product.name || "Product thumbnail"} 
             effect="blur" 
-            srcSet={`${backend_url+product.image}?width=120 120w, 
-                    ${backend_url+product.image}?width=240 240w`}
+            srcSet={getThumbnailSrcSet()}
             sizes="120px"
             width="110px"
             height="auto"
             loading="lazy"
           />
           <LazyLoadImage 
-            src={backend_url + product.image} 
+            src={getSmallImageSrc()} 
             alt={product.name || "Product thumbnail"} 
             effect="blur" 
-            srcSet={`${backend_url+product.image}?width=120 120w, 
-                    ${backend_url+product.image}?width=240 240w`}
+            srcSet={getThumbnailSrcSet()}
             sizes="120px"
             width="110px"
             height="auto"
@@ -63,14 +92,11 @@ const ProductDisplay = ({product}) => {
         <div className="productdisplay-img">
           <LazyLoadImage 
             className="productdisplay-main-img" 
-            src={backend_url + product.image} 
+            src={getImageSrc()} 
             alt={product.name || "Product main image"} 
             effect="blur"
             placeholder={<div className="image-placeholder-large" />}
-            srcSet={`${backend_url+product.image}?width=400 400w, 
-                    ${backend_url+product.image}?width=600 600w, 
-                    ${backend_url+product.image}?width=800 800w, 
-                    ${backend_url+product.image}?width=1200 1200w`}
+            srcSet={getMainSrcSet()}
             sizes="(max-width: 768px) 100vw, 
                    (max-width: 1200px) 50vw, 
                    33vw"

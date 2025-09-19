@@ -74,7 +74,16 @@ const AddProduct = () => {
       dataObj = await uploadResponse.json();
 
       if (dataObj.success) {
+        // Use the main image URL for backward compatibility
         product.image = dataObj.image_url;
+        
+        // Include the comprehensive image data for green software optimization
+        if (dataObj.images) {
+          product.images = dataObj.images;
+        }
+        
+        console.log('🌱 Green Image Upload Success:', dataObj.green_stats);
+        
         const addResponse = await fetch(`${backend_url}/addproduct`, {
           method: 'POST',
           headers: {
@@ -87,7 +96,10 @@ const AddProduct = () => {
         const addData = await addResponse.json();
 
         if (addData.success) {
-          alert("Product Added Successfully!");
+          alert(`✅ Product Added Successfully! 
+🌱 Green Optimization: ${dataObj.green_stats?.compression_ratio} compression
+💾 Bandwidth Saved: ${dataObj.green_stats?.bandwidth_saved}`);
+          
           // Reset form
           setProductDetails({
             name: "",
